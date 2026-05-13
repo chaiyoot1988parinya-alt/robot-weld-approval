@@ -172,7 +172,67 @@ button:hover{
 button:active{
   transform:scale(.98);
 }
+/* =========================
+   TABS
+========================= */
 
+.tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.tab-btn{
+  flex:1;
+  border:none;
+  padding:14px;
+  border-radius:14px;
+  background:#dbe8f5;
+  color:#444;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.tab-btn.active{
+  background:linear-gradient(135deg,#0078d7,#0057a3);
+  color:#fff;
+  box-shadow:0 4px 10px rgba(0,120,215,.25);
+}
+
+/* =========================
+   TAB CONTENT
+========================= */
+
+.tab-content{
+  display:none;
+  animation:fade .25s ease;
+}
+
+.tab-content.active{
+  display:block;
+}
+
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================
+   REQUIRED ERROR
+========================= */
+
+.error{
+  border:2px solid #ff4d4f !important;
+  background:#fff1f0 !important;
+}
 /* =========================
    MOBILE
 ========================= */
@@ -236,109 +296,194 @@ button:active{
     <input type="text" name="requester" required>
   </div>
 
-  <!-- รายละเอียด -->
+  <!-- =========================
+     TAB BUTTONS
+========================= -->
+
+<div class="tabs">
+  <button type="button" class="tab-btn active" onclick="openTab(1)">
+    🛠 รายละเอียดชิ้นงาน
+  </button>
+  <button type="button" class="tab-btn" onclick="openTab(2)">
+    📷 แนบรูปถ่าย
+  </button>
+</div>
+
+<!-- =========================
+     TAB 1
+========================= -->
+
+<div class="tab-content active" id="tab1">
+  <div class="section">
+    <h3>👤 ข้อมูลผู้ขอ</h3>
+
+    <label>ชื่อผู้ขอ</label>
+    <input type="text" name="requester" required>
+  </div>
   <div class="section">
     <h3>🛠 รายละเอียดชิ้นงาน</h3>
-
     <div class="row">
       <div class="field">
         <label>Part No.</label>
         <input type="text" name="partNo" required>
       </div>
-
       <div class="field">
         <label>Part Name</label>
         <input type="text" name="partName" required>
       </div>
     </div>
-
     <div class="row">
       <div class="field">
         <label>Model</label>
         <input type="text" name="model" required>
       </div>
-
       <div class="field">
         <label>Job No.</label>
         <input type="text" name="jobNo" required>
       </div>
     </div>
-
   </div>
+  <button type="button" onclick="nextTab()">
+    ➡ ถัดไป
+  </button>
+</div>
 
-  <!-- รูป -->
+<!-- =========================
+     TAB 2
+========================= -->
+
+<div class="tab-content" id="tab2">
   <div class="section">
     <h3>📷 แนบรูปถ่าย</h3>
-
     <label>รูปก่อนปรับ</label>
-    <input type="file" name="beforeImg" accept="image/*"
-      onchange="previewImage(this,'beforePreview')" required>
+    <input type="file"
+           name="beforeImg"
+           accept="image/*"
+           onchange="previewImage(this,'beforePreview')"
+           required>
     <img id="beforePreview" class="preview-img">
-
     <label>รูปหลังปรับ</label>
-    <input type="file" name="afterImg" accept="image/*"
-      onchange="previewImage(this,'afterPreview')" required>
+    <input type="file"
+           name="afterImg"
+           accept="image/*"
+           onchange="previewImage(this,'afterPreview')"
+           required>
     <img id="afterPreview" class="preview-img">
-
     <label>แบบลูกค้า</label>
-    <input type="file" name="customerImg" accept="image/*"
-      onchange="previewImage(this,'customerPreview')" required>
+    <input type="file"
+           name="customerImg"
+           accept="image/*"
+           onchange="previewImage(this,'customerPreview')"
+           required>
     <img id="customerPreview" class="preview-img">
   </div>
 
   <button type="submit">
     ✅ ส่งขออนุมัติ
   </button>
-
+</div>
 </form>
-
 <script>
-
 const scriptURL = "https://script.google.com/macros/s/AKfycbwZF2qpZ5-CwfnIjjNeDBLZSSljV0aGUljpDPAZzbfez_XQdqMxcrgXG_Zj0iHjgoWW/exec";
+/* =========================
+   OPEN TAB
+========================= */
 
-document.getElementById("requestForm").addEventListener("submit", async e => {
+function openTab(tabNumber){
 
+  document.querySelectorAll(".tab-btn")
+    .forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".tab-content")
+    .forEach(tab => tab.classList.remove("active"));
+  document.querySelectorAll(".tab-btn")[tabNumber-1]
+    .classList.add("active");
+  document.getElementById("tab"+tabNumber)
+    .classList.add("active");
+}
+
+/* =========================
+   NEXT TAB + VALIDATE
+========================= */
+
+function nextTab(){
+  let valid = true;
+  const requiredFields = document.querySelectorAll(
+    '#tab1 input[required]'
+  );
+  requiredFields.forEach(field=>{
+    field.classList.remove("error");
+    if(!field.value.trim()){
+      field.classList.add("error");
+      valid = false;
+    }
+  });
+  if(!valid){
+    alert("⚠ กรุณากรอกข้อมูลให้ครบทุกช่อง");
+    return;
+  }
+  openTab(2);
+}
+
+/* =========================
+   SUBMIT VALIDATE
+========================= */
+
+document.getElementById("requestForm")
+.addEventListener("submit", async e=>{
   e.preventDefault();
+  let valid = true;
+  const allRequired = document.querySelectorAll(
+    '#requestForm input[required]'
+  );
+  allRequired.forEach(field=>{
+    field.classList.remove("error");
+    if(field.type === "file"){
+      if(!field.files.length){
+        field.classList.add("error");
+        valid = false;
+      }
+    }else{
+      if(!field.value.trim()){
+        field.classList.add("error");
+        valid = false;
+      }
+    }
+  });
+  if(!valid){
+    alert("⚠ กรุณากรอกข้อมูลและแนบรูปให้ครบก่อนส่ง");
+    return;
+  }
 
-  const btn = document.querySelector("button");
+  /* ====== เริ่มส่งข้อมูล ====== */
+
+  const btn = e.target.querySelector('button[type="submit"]');
   btn.innerHTML = "⏳ กำลังส่งข้อมูล...";
   btn.disabled = true;
-
   const formData = new FormData(e.target);
   const data = {};
-
   async function toBase64(file){
     return new Promise((resolve,reject)=>{
       const reader = new FileReader();
-
       reader.onload = () =>
         resolve(reader.result.split(",")[1]);
-
       reader.onerror = error => reject(error);
-
       reader.readAsDataURL(file);
     });
   }
-
   data.requester = formData.get("requester");
   data.partNo = formData.get("partNo");
   data.partName = formData.get("partName");
   data.model = formData.get("model");
   data.jobNo = formData.get("jobNo");
-
   const beforeFile = formData.get("beforeImg");
   const afterFile = formData.get("afterImg");
   const customerFile = formData.get("customerImg");
-
   if(beforeFile)
     data.beforeImg = await toBase64(beforeFile);
-
   if(afterFile)
     data.afterImg = await toBase64(afterFile);
-
   if(customerFile)
     data.customerImg = await toBase64(customerFile);
-
   fetch(scriptURL,{
     method:"POST",
     body:JSON.stringify(data)
@@ -346,35 +491,26 @@ document.getElementById("requestForm").addEventListener("submit", async e => {
   .then(res=>{
     alert("✅ ส่งคำขอเรียบร้อยแล้ว");
     e.target.reset();
-
     document.getElementById("beforePreview").src = "";
     document.getElementById("afterPreview").src = "";
     document.getElementById("customerPreview").src = "";
-
     btn.innerHTML = "✅ ส่งขออนุมัติ";
     btn.disabled = false;
+    openTab(1);
   })
   .catch(err=>{
     alert("❌ เกิดข้อผิดพลาด : " + err);
-
     btn.innerHTML = "✅ ส่งขออนุมัติ";
     btn.disabled = false;
   });
-
 });
-
 function previewImage(input,previewId){
-
   const file = input.files[0];
-
   if(file){
-
     const reader = new FileReader();
-
     reader.onload = e => {
       document.getElementById(previewId).src = e.target.result;
     }
-
     reader.readAsDataURL(file);
   }
 }
