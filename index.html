@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Robot Weld Approval Request</title>
+</head>
+<body>
+  <h2>ส่งขออนุมัติปรับแนวเชื่อมโรบอท</h2>
+  <form id="requestForm">
+    <label>ชื่อผู้ขอ:</label><br>
+    <input type="text" name="requester" required><br><br>
+
+    <label>Part No.:</label><br>
+    <input type="text" name="partNo" required><br><br>
+
+    <label>Part Name:</label><br>
+    <input type="text" name="partName" required><br><br>
+
+    <label>Model:</label><br>
+    <input type="text" name="model" required><br><br>
+
+    <label>Job No.:</label><br>
+    <input type="text" name="jobNo" required><br><br>
+
+    <label>รายละเอียดการปรับ:</label><br>
+    <textarea name="detail" required></textarea><br><br>
+
+    <label>รูปก่อนปรับ (URL):</label><br>
+    <input type="url" name="beforeImg" required><br><br>
+
+    <label>รูปหลังปรับ (URL):</label><br>
+    <input type="url" name="afterImg" required><br><br>
+
+    <label>แบบลูกค้า (URL):</label><br>
+    <input type="url" name="customerImg" required><br><br>
+
+    <button type="submit">ส่งขออนุมัติ</button>
+  </form>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwZF2qpZ5-CwfnIjjNeDBLZSSljV0aGUljpDPAZzbfez_XQdqMxcrgXG_Zj0iHjgoWW/exec"; // URL จาก Apps Script Deploy
+    document.getElementById("requestForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      }).then(res => alert("ส่งคำขอเรียบร้อยแล้ว!"))
+        .catch(err => alert("เกิดข้อผิดพลาด: " + err));
+    });
+  </script>
+</body>
+</html>
