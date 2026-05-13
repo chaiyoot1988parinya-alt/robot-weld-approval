@@ -1,208 +1,385 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Robot Weld Approval</title>
-  <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: #f4f6f9;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robot Weld Approval</title>
 
-    /* Title Bar */
-    .title-bar {
-      background: #0078d7;
-      color: #fff;
-      padding: 15px;
-      text-align: center;
-      font-size: 45px;
-      font-weight: bold;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    form {
-      max-width: 100%;
-      margin: auto;
-      padding: 20px;
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    .section {
-      background: #fff;
-      margin-bottom: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+body{
+  font-family:'Sarabun',sans-serif;
+  background:#eef2f7;
+  color:#333;
+}
 
-    .section h3 {
-      margin-top: 0;
-      color: #0078d7;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 8px;
-    }
+/* =========================
+   HEADER
+========================= */
+.title-bar{
+  background:linear-gradient(135deg,#0078d7,#0057a3);
+  color:#fff;
+  padding:20px 15px;
+  text-align:center;
+  font-size:30px;
+  font-weight:700;
+  line-height:1.4;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+  border-bottom-left-radius:20px;
+  border-bottom-right-radius:20px;
+}
 
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: 600;
-      color: #444;
-    }
+/* =========================
+   FORM
+========================= */
+form{
+  width:100%;
+  max-width:850px;
+  margin:auto;
+  padding:15px;
+}
 
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 30px;
-    }
+/* =========================
+   CARD SECTION
+========================= */
+.section{
+  background:#fff;
+  margin-bottom:18px;
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 5px 15px rgba(0,0,0,.08);
+  transition:.2s;
+}
 
-    input[type="file"] {
-      margin-top: 10px;
-    }
+.section:hover{
+  transform:translateY(-2px);
+}
 
-    /* รูปภาพโชว์ใหญ่เต็มหน้าจอมือถือ */
-    .preview-img {
-      width: 100%;
-      max-height: 400px;
-      object-fit: contain;
-      margin-top: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-    }
+.section h3{
+  font-size:24px;
+  color:#0078d7;
+  margin-bottom:15px;
+  padding-bottom:10px;
+  border-bottom:2px solid #edf2f7;
+}
 
-    button {
-      width: 150px;
-      padding: 12px;
-      background: #0078d7;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 36px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 20px;
-      widht:300px;
-    }
+/* =========================
+   INPUT
+========================= */
+label{
+  display:block;
+  margin-top:12px;
+  margin-bottom:6px;
+  font-weight:600;
+  color:#444;
+  font-size:18px;
+}
 
-    button:hover {
-      background: #005fa3;
-    }
-     .row {
-    display: flex;
-    gap: 10px;          /* ระยะห่างระหว่างช่อง */
-    margin-bottom: 15px;
+input[type="text"],
+textarea{
+  width:100%;
+  padding:14px;
+  border:1px solid #d0d7e2;
+  border-radius:12px;
+  font-size:18px;
+  background:#fafcff;
+  transition:.2s;
+}
+
+input[type="text"]:focus,
+textarea:focus{
+  outline:none;
+  border-color:#0078d7;
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(0,120,215,.15);
+}
+
+textarea{
+  resize:none;
+  min-height:120px;
+}
+
+/* =========================
+   ROW
+========================= */
+.row{
+  display:flex;
+  gap:15px;
+  margin-bottom:10px;
+}
+
+.field{
+  flex:1;
+}
+
+/* =========================
+   FILE INPUT
+========================= */
+input[type="file"]{
+  width:100%;
+  padding:10px;
+  border:2px dashed #b9c7d8;
+  border-radius:12px;
+  background:#f9fbff;
+  cursor:pointer;
+  font-size:16px;
+}
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+.preview-img{
+  width:100%;
+  max-height:320px;
+  object-fit:contain;
+  margin-top:12px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  background:#fff;
+  padding:5px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+button{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:16px;
+  background:linear-gradient(135deg,#00a651,#008f45);
+  color:#fff;
+  font-size:24px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:10px;
+  box-shadow:0 6px 15px rgba(0,166,81,.3);
+  transition:.25s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(135deg,#009649,#007f3d);
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media(max-width:768px){
+
+  .title-bar{
+    font-size:24px;
+    padding:18px 12px;
   }
-  .row label {
-    flex: 1;            /* label กว้างเท่ากัน */
+
+  .section{
+    padding:15px;
+    border-radius:16px;
   }
-  .row input {
-    flex: 2;            /* input กว้างกว่า label */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 100%;
-    box-sizing: border-box;
+
+  .section h3{
+    font-size:21px;
   }
-  </style>
+
+  .row{
+    flex-direction:column;
+    gap:5px;
+  }
+
+  input[type="text"],
+  textarea{
+    font-size:17px;
+    padding:13px;
+  }
+
+  label{
+    font-size:17px;
+  }
+
+  button{
+    font-size:22px;
+    padding:16px;
+  }
+
+  .preview-img{
+    max-height:250px;
+  }
+}
+
+</style>
 </head>
+
 <body>
-  <div class="title-bar">📌 ขออนุมัติปรับแนวเชื่อมโรบอท</div>
 
-  <form id="requestForm">
-    <div class="section">
-      <h3>ข้อมูลผู้ขอ</h3>
-      <label>ชื่อผู้ขอ:</label>
-      <input type="text" name="requester" required>
-    </div>
-    <div class="section">
-      <h3>รายละเอียดชิ้นงาน</h3>
-  <div class="row">
-    <label>Part No.:</label>
-    <input type="text" name="partNo" required>
-    <label>Part Name:</label>
-    <input type="text" name="partName" required>
+<div class="title-bar">
+  📌 ขออนุมัติปรับแนวเชื่อมโรบอท
+</div>
+
+<form id="requestForm">
+
+  <!-- ผู้ขอ -->
+  <div class="section">
+    <h3>👤 ข้อมูลผู้ขอ</h3>
+
+    <label>ชื่อผู้ขอ</label>
+    <input type="text" name="requester" required>
   </div>
-  <!-- Model + Job No. -->
-  <div class="row">
-    <label>Model:</label>
-    <input type="text" name="model" required>
-    <label>Job No.:</label>
-    <input type="text" name="jobNo" required>
+
+  <!-- รายละเอียด -->
+  <div class="section">
+    <h3>🛠 รายละเอียดชิ้นงาน</h3>
+
+    <div class="row">
+      <div class="field">
+        <label>Part No.</label>
+        <input type="text" name="partNo" required>
+      </div>
+
+      <div class="field">
+        <label>Part Name</label>
+        <input type="text" name="partName" required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Model</label>
+        <input type="text" name="model" required>
+      </div>
+
+      <div class="field">
+        <label>Job No.</label>
+        <input type="text" name="jobNo" required>
+      </div>
+    </div>
+
   </div>
-    </div>
 
-    <div class="section">
-      <h3>แนบรูปถ่าย</h3>
-      <label>รูปก่อนปรับ:</label>
-      <input type="file" name="beforeImg" accept="image/*" onchange="previewImage(this, 'beforePreview')" required>
-      <img id="beforePreview" class="preview-img">
+  <!-- รูป -->
+  <div class="section">
+    <h3>📷 แนบรูปถ่าย</h3>
 
-      <label>รูปหลังปรับ:</label>
-      <input type="file" name="afterImg" accept="image/*" onchange="previewImage(this, 'afterPreview')" required>
-      <img id="afterPreview" class="preview-img">
+    <label>รูปก่อนปรับ</label>
+    <input type="file" name="beforeImg" accept="image/*"
+      onchange="previewImage(this,'beforePreview')" required>
+    <img id="beforePreview" class="preview-img">
 
-      <label>แบบลูกค้า:</label>
-      <input type="file" name="customerImg" accept="image/*" onchange="previewImage(this, 'customerPreview')" required>
-      <img id="customerPreview" class="preview-img">
-    </div>
+    <label>รูปหลังปรับ</label>
+    <input type="file" name="afterImg" accept="image/*"
+      onchange="previewImage(this,'afterPreview')" required>
+    <img id="afterPreview" class="preview-img">
 
-    <button type="submit">✅ ส่งขออนุมัติ</button>
-  </form>
+    <label>แบบลูกค้า</label>
+    <input type="file" name="customerImg" accept="image/*"
+      onchange="previewImage(this,'customerPreview')" required>
+    <img id="customerPreview" class="preview-img">
+  </div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwZF2qpZ5-CwfnIjjNeDBLZSSljV0aGUljpDPAZzbfez_XQdqMxcrgXG_Zj0iHjgoWW/exec";
+  <button type="submit">
+    ✅ ส่งขออนุมัติ
+  </button>
 
-    document.getElementById("requestForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = {};
+</form>
 
-      // ฟังก์ชันแปลงไฟล์เป็น Base64
-      async function toBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result.split(",")[1]);
-          reader.onerror = error => reject(error);
-          reader.readAsDataURL(file);
-        });
-      }
+<script>
 
-      data.requester = formData.get("requester");
-      data.partNo = formData.get("partNo");
-      data.partName = formData.get("partName");
-      data.model = formData.get("model");
-      data.jobNo = formData.get("jobNo");
-      data.detail = formData.get("detail");
+const scriptURL = "https://script.google.com/macros/s/AKfycbwZF2qpZ5-CwfnIjjNeDBLZSSljV0aGUljpDPAZzbfez_XQdqMxcrgXG_Zj0iHjgoWW/exec";
 
-      const beforeFile = formData.get("beforeImg");
-      const afterFile = formData.get("afterImg");
-      const customerFile = formData.get("customerImg");
+document.getElementById("requestForm").addEventListener("submit", async e => {
 
-      if (beforeFile) data.beforeImg = await toBase64(beforeFile);
-      if (afterFile) data.afterImg = await toBase64(afterFile);
-      if (customerFile) data.customerImg = await toBase64(customerFile);
+  e.preventDefault();
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(data)
-      }).then(res => alert("ส่งคำขอเรียบร้อยแล้ว!"))
-        .catch(err => alert("เกิดข้อผิดพลาด: " + err));
+  const btn = document.querySelector("button");
+  btn.innerHTML = "⏳ กำลังส่งข้อมูล...";
+  btn.disabled = true;
+
+  const formData = new FormData(e.target);
+  const data = {};
+
+  async function toBase64(file){
+    return new Promise((resolve,reject)=>{
+      const reader = new FileReader();
+
+      reader.onload = () =>
+        resolve(reader.result.split(",")[1]);
+
+      reader.onerror = error => reject(error);
+
+      reader.readAsDataURL(file);
     });
-        function previewImage(input, previewId) {
-      const file = input.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          document.getElementById(previewId).src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
+  }
+
+  data.requester = formData.get("requester");
+  data.partNo = formData.get("partNo");
+  data.partName = formData.get("partName");
+  data.model = formData.get("model");
+  data.jobNo = formData.get("jobNo");
+
+  const beforeFile = formData.get("beforeImg");
+  const afterFile = formData.get("afterImg");
+  const customerFile = formData.get("customerImg");
+
+  if(beforeFile)
+    data.beforeImg = await toBase64(beforeFile);
+
+  if(afterFile)
+    data.afterImg = await toBase64(afterFile);
+
+  if(customerFile)
+    data.customerImg = await toBase64(customerFile);
+
+  fetch(scriptURL,{
+    method:"POST",
+    body:JSON.stringify(data)
+  })
+  .then(res=>{
+    alert("✅ ส่งคำขอเรียบร้อยแล้ว");
+    e.target.reset();
+
+    document.getElementById("beforePreview").src = "";
+    document.getElementById("afterPreview").src = "";
+    document.getElementById("customerPreview").src = "";
+
+    btn.innerHTML = "✅ ส่งขออนุมัติ";
+    btn.disabled = false;
+  })
+  .catch(err=>{
+    alert("❌ เกิดข้อผิดพลาด : " + err);
+
+    btn.innerHTML = "✅ ส่งขออนุมัติ";
+    btn.disabled = false;
+  });
+
+});
+
+function previewImage(input,previewId){
+
+  const file = input.files[0];
+
+  if(file){
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      document.getElementById(previewId).src = e.target.result;
     }
-  </script>
+
+    reader.readAsDataURL(file);
+  }
+}
+
+</script>
+
 </body>
 </html>
-
-
