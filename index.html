@@ -3,47 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <title>Robot Weld Approval Request</title>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; background: #f4f6f9; padding: 20px; }
+    form { max-width: 600px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    label { font-weight: 600; margin-top: 10px; display: block; }
+    input, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+    button { width: 100%; padding: 12px; background: #0078d7; color: #fff; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #005fa3; }
+  </style>
 </head>
 <body>
   <h2>ส่งขออนุมัติปรับแนวเชื่อมโรบอท</h2>
   <form id="requestForm">
-    <label>ชื่อผู้ขอ:</label><br>
-    <input type="text" name="requester" required><br><br>
+    <label>ชื่อผู้ขอ:</label>
+    <input type="text" name="requester" required>
 
-    <label>Part No.:</label><br>
-    <input type="text" name="partNo" required><br><br>
+    <label>Part No.:</label>
+    <input type="text" name="partNo" required>
 
-    <label>Part Name:</label><br>
-    <input type="text" name="partName" required><br><br>
+    <label>Part Name:</label>
+    <input type="text" name="partName" required>
 
-    <label>Model:</label><br>
-    <input type="text" name="model" required><br><br>
+    <label>Model:</label>
+    <input type="text" name="model" required>
 
-    <label>Job No.:</label><br>
-    <input type="text" name="jobNo" required><br><br>
+    <label>Job No.:</label>
+    <input type="text" name="jobNo" required>
 
-    <label>รายละเอียดการปรับ:</label><br>
-    <textarea name="detail" required></textarea><br><br>
+    <label>รายละเอียดการปรับ:</label>
+    <textarea name="detail" required></textarea>
 
-    <label>รูปก่อนปรับ (URL):</label><br>
-    <input type="url" name="beforeImg" required><br><br>
+    <label>รูปก่อนปรับ:</label>
+    <input type="file" name="beforeImg" accept="image/*" required>
 
-    <label>รูปหลังปรับ (URL):</label><br>
-    <input type="url" name="afterImg" required><br><br>
+    <label>รูปหลังปรับ:</label>
+    <input type="file" name="afterImg" accept="image/*" required>
 
-    <label>แบบลูกค้า (URL):</label><br>
-    <input type="url" name="customerImg" required><br><br>
+    <label>แบบลูกค้า:</label>
+    <input type="file" name="customerImg" accept="image/*" required>
 
     <button type="submit">ส่งขออนุมัติ</button>
   </form>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwZF2qpZ5-CwfnIjjNeDBLZSSljV0aGUljpDPAZzbfez_XQdqMxcrgXG_Zj0iHjgoWW/exec"; // URL จาก Apps Script Deploy
-    document.getElementById("requestForm").addEventListener("submit", e => {
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwZF2qpZ5-CwfnIjjNeDBLZSSljV0aGUljpDPAZzbfez_XQdqMxcrgXG_Zj0iHjgoWW/exec";
+
+    document.getElementById("requestForm").addEventListener("submit", async e => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = {};
-      formData.forEach((value, key) => data[key] = value);
+
+      // ฟังก์ชันแปลงไฟล์เป็น Base64
+      async function toBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(",")[1]);
+          reader.onerror = error => reject(error);
+          reader.readAsDataURL(file);
+        });
+      }
+
+      data.requester = formData.get("requester");
+      data.partNo = formData.get("partNo");
+      data.partName = formData.get("partName");
+      data.model = formData.get("model");
+      data.jobNo = formData.get("jobNo");
+      data.detail = formData.get("detail");
+
+      const beforeFile = formData.get("beforeImg");
+      const afterFile = formData.get("afterImg");
+      const customerFile = formData.get("customerImg");
+
+      if (beforeFile) data.beforeImg = await toBase64(beforeFile);
+      if (afterFile) data.afterImg = await toBase64(afterFile);
+      if (customerFile) data.customerImg = await toBase64(customerFile);
 
       fetch(scriptURL, {
         method: "POST",
@@ -54,3 +87,5 @@
   </script>
 </body>
 </html>
+
+
