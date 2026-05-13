@@ -179,7 +179,7 @@ button:active{
 .tabs{
   display:flex;
   gap:10px;
-  margin-bottom:15px;
+  margin-bottom:10px;
 }
 
 .tab-btn{
@@ -189,7 +189,7 @@ button:active{
   border-radius:14px;
   background:#dbe8f5;
   color:#444;
-  font-size:18px;
+  font-size:17px;
   font-weight:700;
   cursor:pointer;
   transition:.25s;
@@ -285,24 +285,14 @@ button:active{
 <div class="title-bar">
   📌 ขออนุมัติปรับแนวเชื่อมโรบอท
 </div>
-
 <form id="requestForm">
-
-  <!-- ผู้ขอ -->
-  <div class="section">
-    <h3>👤 ข้อมูลผู้ขอ</h3>
-
-    <label>ชื่อผู้ขอ</label>
-    <input type="text" name="requester" required>
-  </div>
-
-  <!-- =========================
+<!-- =========================
      TAB BUTTONS
 ========================= -->
 
 <div class="tabs">
   <button type="button" class="tab-btn active" onclick="openTab(1)">
-    🛠 รายละเอียดชิ้นงาน
+    🛠 รายละเอียด
   </button>
   <button type="button" class="tab-btn" onclick="openTab(2)">
     📷 แนบรูปถ่าย
