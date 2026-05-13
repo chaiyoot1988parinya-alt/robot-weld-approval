@@ -2,47 +2,135 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Robot Weld Approval Request</title>
+  <title>Robot Weld Approval</title>
   <style>
-    body { font-family: "Segoe UI", sans-serif; background: #f4f6f9; padding: 20px; }
-    form { max-width: 600px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    label { font-weight: 600; margin-top: 10px; display: block; }
-    input, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
-    button { width: 100%; padding: 12px; background: #0078d7; color: #fff; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
-    button:hover { background: #005fa3; }
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Title Bar */
+    .title-bar {
+      background: #0078d7;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    form {
+      max-width: 100%;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .section {
+      background: #fff;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .section h3 {
+      margin-top: 0;
+      color: #0078d7;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+    }
+
+    /* รูปภาพโชว์ใหญ่เต็มหน้าจอมือถือ */
+    .preview-img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      margin-top: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0078d7;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #005fa3;
+    }
   </style>
 </head>
 <body>
-  <h2>ส่งขออนุมัติปรับแนวเชื่อมโรบอท</h2>
+  <div class="title-bar">📌 ส่งขออนุมัติปรับแนวเชื่อมโรบอท</div>
+
   <form id="requestForm">
-    <label>ชื่อผู้ขอ:</label>
-    <input type="text" name="requester" required>
+    <div class="section">
+      <h3>ข้อมูลผู้ขอ</h3>
+      <label>ชื่อผู้ขอ:</label>
+      <input type="text" name="requester" required>
+    </div>
 
-    <label>Part No.:</label>
-    <input type="text" name="partNo" required>
+    <div class="section">
+      <h3>รายละเอียดชิ้นงาน</h3>
+      <label>Part No.:</label>
+      <input type="text" name="partNo" required>
+      <label>Part Name:</label>
+      <input type="text" name="partName" required>
+      <label>Model:</label>
+      <input type="text" name="model" required>
+      <label>Job No.:</label>
+      <input type="text" name="jobNo" required>
+      <label>รายละเอียดการปรับ:</label>
+      <textarea name="detail" required></textarea>
+    </div>
 
-    <label>Part Name:</label>
-    <input type="text" name="partName" required>
+    <div class="section">
+      <h3>แนบรูปถ่าย</h3>
+      <label>รูปก่อนปรับ:</label>
+      <input type="file" name="beforeImg" accept="image/*" onchange="previewImage(this, 'beforePreview')" required>
+      <img id="beforePreview" class="preview-img">
 
-    <label>Model:</label>
-    <input type="text" name="model" required>
+      <label>รูปหลังปรับ:</label>
+      <input type="file" name="afterImg" accept="image/*" onchange="previewImage(this, 'afterPreview')" required>
+      <img id="afterPreview" class="preview-img">
 
-    <label>Job No.:</label>
-    <input type="text" name="jobNo" required>
+      <label>แบบลูกค้า:</label>
+      <input type="file" name="customerImg" accept="image/*" onchange="previewImage(this, 'customerPreview')" required>
+      <img id="customerPreview" class="preview-img">
+    </div>
 
-    <label>รายละเอียดการปรับ:</label>
-    <textarea name="detail" required></textarea>
-
-    <label>รูปก่อนปรับ:</label>
-    <input type="file" name="beforeImg" accept="image/*" required>
-
-    <label>รูปหลังปรับ:</label>
-    <input type="file" name="afterImg" accept="image/*" required>
-
-    <label>แบบลูกค้า:</label>
-    <input type="file" name="customerImg" accept="image/*" required>
-
-    <button type="submit">ส่งขออนุมัติ</button>
+    <button type="submit">✅ ส่งขออนุมัติ</button>
   </form>
 
   <script>
@@ -84,6 +172,16 @@
       }).then(res => alert("ส่งคำขอเรียบร้อยแล้ว!"))
         .catch(err => alert("เกิดข้อผิดพลาด: " + err));
     });
+        function previewImage(input, previewId) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById(previewId).src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
   </script>
 </body>
 </html>
